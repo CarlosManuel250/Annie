@@ -1,0 +1,232 @@
+Build System
+============
+
+= Requirements
+
+Given a list of configurations, let the user choose the ones he wants and then generate the Makefiles and/or config scripts;
+
+== Configuration format
+
+----
+
+<option name="option name" type="boolean, text, integer, float, list, choice, parent" default="false">
+  <config>OPTION_NAME</config>
+  <help>Help string</help>
+  <requires>
+    <require name=""/>
+  </requires>
+</option>
+
+----
+
+=== Configuration types
+
+[options="header,footer"]
+|=======================
+|Type|Has default|Values|Description
+|boolean|yes|true or false|Represents a boolean choice if the option isn't set then the configure is not defined. (#define NAME)
+|text|yes|any string|Represents a string of text it is defined as a string. (#define NAME "STRING")
+|integer|yes|any signed integer|Represents a integer number that is defined as a constant (#define NAME INTEGER)
+|float|yes|any signed float|Represents a float number that is defined as a constant (#define NAME INTEGER)
+|list|no|depends of the other option|(#define NAME_1 VAL_1 \n ...)
+|choice|yes|depends of the choice values see description|This type adds a new tag that is <values>val1,val2,...</values> from which the user must choose
+|parent|no|none|See bellow
+|=======================
+
+=== Configuration include
+
+Use standard xml includes...
+
+=== Subconfigurations
+
+----
+
+<option name="option name" type="parent">
+  <help>Help string</help>
+  <requires>
+    <require name=""/>
+  </requires>
+  <suboptions>
+    <suboption name=""/>
+  </suboptions>
+</option>
+
+----
+
+== Configuration choose
+
+=== Command Line Menus
+
+Use a set of command line menus to choose options and sub-options. When a user pushes a key, then distribute the event to the active menu.
+
+==== Menus and configuration types
+
+===== Boolean
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (S)et or unset, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+===== Text
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)dit, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+----
+Option Name -> New Value: 
+----
+
+==== Integer
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)dit, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+----
+Input new value
+________________________________
+
+Option Name -> New Value: 
+----
+
+==== Float
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)dit, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+----
+Input new value
+________________________________
+
+Option Name -> New Value: 
+----
+
+==== List
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)dit, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+----
+Input new values comma separated
+________________________________
+
+Option Name -> New Value:
+----
+
+==== Choice
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)dit, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+----
+Choose the new value
+________________________________
+
+Choice (1): Choice_name 
+Choice (2): Choice_name1
+Choice (3): Choice_name2
+----
+
+or using a list
+
+----
+Input value options comma separated
+________________________________
+
+Choice (1): Choice_name 
+Choice (2): Choice_name1
+Choice (3): Choice_name2
+
+Option Name -> New Values: 
+----
+
+==== Parent
+
+----
+Parent Option
+__________________________________________
+
+Option Name: Default Value ( (E)nter, (H)elp )
+(...)
+__________________________________________
+
+Save (F2), Load (F3), Quit (F4)
+----
+
+=== Serialization
+
+Using a xml format and by configuration types.
+
+----
+<option name="option name" type="boolean, text, integer, float, list, choice, parent" default="false">
+  <config>OPTION_NAME</config>
+  <help>Help string</help>
+  <requires>
+    <require name=""/>
+  </requires>
+</option>
+----
+
+==== Boolean, Text, Integer, Float, Choice
+
+----
+<option name="OPTION_NAME" type="boolean, text, integer, float, choice">VALUE</option>
+----
+
+==== List
+
+----
+<option name="OPTION_NAME" type="boolean, text, integer, float, choice">
+  <value>(...)</value>
+</option>
+----
+
+=== C++ Makefile output
+
+TODO
